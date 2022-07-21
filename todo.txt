@@ -1,0 +1,50 @@
+CARTOGRAPHER
+
+DDB
+- cartographer table
+- books:
+    - access patterns:
+        - get all books
+        - get books in DDC range
+        - get books by complete date
+    - schema:
+        pk = "book"
+        sk = DDC
+        date (local secondary index)
+        title
+        author
+- journals:
+    - access patterns:
+        - get all
+        - get all for category
+        - get all for category by date
+    - schema:
+        pk = "journal"
+        sk = category
+        date (local secondary index)
+        title
+        subtitle
+        body
+
+- all columns:
+    pk S
+    sk S
+    ddc S
+    date S
+    title S
+    author S
+    subtitle S
+    body S
+
+API
+
+- /book
+    - params:
+        from_ddc
+        to_ddc
+        from_date
+        to_date
+- /journal/{category}
+    - params:
+        from_date
+        to_date
