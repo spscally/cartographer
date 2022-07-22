@@ -13,13 +13,13 @@ DDB
         date (local secondary index)
         title
         author
-- journals:
+- reflection:
     - access patterns:
         - get all
         - get all for category
         - get all for category by date
     - schema:
-        pk = "journal"
+        pk = "reflection"
         sk = category
         date (local secondary index)
         title
@@ -44,7 +44,7 @@ API
         to_ddc
         from_date
         to_date
-- /journal/{category}
+- /reflection/{category}
     - params:
         from_date
         to_date
