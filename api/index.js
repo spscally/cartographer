@@ -9,6 +9,8 @@ import { getBooksByDDC, getBooksByDate, putBook as _putBook } from "./book.js";
 import {
   getReflectionsByDate,
   putReflection as _putReflection,
+  getReflectionCategories as _getReflectionCategories,
+  getAllReflectionsByDate,
 } from "./reflection.js";
 
 // ================
@@ -48,10 +50,11 @@ function getBooks(req, res, next) {
 
 // TODO: jsonschema
 function putBook(req, res, next) {
+  const date = req.body.date ?? new Date().toISOString();
   const book = {
     pk: "book",
     sk: req.body.ddc.toString(),
-    date: new Date().toISOString(),
+    date: date,
     title: req.body.title.toString(),
     author: req.body.author.toString(),
   };
@@ -68,21 +71,24 @@ app.route("/book").get(getBooks).put(putBook);
 
 function getReflections(req, res, next) {
   return Promise.resolve(
-    getReflectionsByDate(
-      req.params.category,
-      req.query.from_date,
-      req.query.to_date
-    )
+    req.params.category
+      ? getReflectionsByDate(
+          req.params.category,
+          req.query.from_date,
+          req.query.to_date
+        )
+      : getAllReflectionsByDate(req.query.from_date, req.query.to_date)
   )
     .then((result) => res.send(result))
     .catch((err) => next(err));
 }
 
 function putReflection(req, res, next) {
+  const date = req.body.date ?? new Date().toISOString();
   const reflection = {
     pk: "reflection",
-    sk: req.params.category.toString(),
-    date: new Date().toISOString(),
+    sk: `${req.params.category.toString()}_${date}`,
+    date: date,
     title: req.body.title.toString(),
     subtitle: req.body.subtitle.toString(),
     body: req.body.body.toString(),
@@ -92,4 +98,17 @@ function putReflection(req, res, next) {
     .catch((err) => next(err));
 }
 
+app.route("/reflection").get(getReflections);
 app.route("/reflection/:category").get(getReflections).put(putReflection);
+
+// ================
+// == CATEGORIES ==
+// ================
+
+function getReflectionCategories(req, res, next) {
+  return Promise.resolve(_getReflectionCategories())
+    .then((result) => res.send(result))
+    .catch((err) => next(err));
+}
+
+app.route("/category/reflection").get(getReflectionCategories);

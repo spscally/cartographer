@@ -31,8 +31,8 @@ function App() {
   return (
     <>
       <SideNav
-        onBooksClick={onBooksClick}
-        onReflectionsClick={onReflectionsClick}
+        navLabels={["Books", "Reflections"]}
+        clickFunctions={[onBooksClick, onReflectionsClick]}
       />
       {showPage()}
     </>

@@ -1,18 +1,18 @@
 import React from "react";
 
-const SideNav = ({ onBooksClick, onReflectionsClick }) => {
+const SideNav = ({ navLabels, clickFunctions }) => {
   return (
     <div className="sidenav">
-      <a className="sidenav-link" href="#books" onClick={() => onBooksClick()}>
-        Books
-      </a>
-      <a
-        className="sidenav-link"
-        href="#reflections"
-        onClick={() => onReflectionsClick()}
-      >
-        Reflections
-      </a>
+      {navLabels.map((label, index) => (
+        <a
+          key={label}
+          className="sidenav-link"
+          href={`#${label.toLowerCase()}`}
+          onClick={() => clickFunctions[index]}
+        >
+          {label}
+        </a>
+      ))}
     </div>
   );
 };

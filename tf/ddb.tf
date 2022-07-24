@@ -17,8 +17,8 @@ resource "aws_dynamodb_table" "cartographer_table" {
     name = "cartographer"
 
     billing_mode = "PROVISIONED"
-    read_capacity = 3
-    write_capacity = 3
+    read_capacity = 5
+    write_capacity = 5
 
     hash_key = "pk"
     range_key = "sk"
@@ -36,16 +36,6 @@ resource "aws_dynamodb_table" "cartographer_table" {
     attribute {
         name = "date"
         type = "S"
-    }
-
-    global_secondary_index {
-        name = "reflection-category-date-index"
-        hash_key = "sk"
-        range_key = "date"
-        read_capacity = 3
-        write_capacity = 3
-        projection_type = "INCLUDE"
-        non_key_attributes = ["title", "subtitle", "body"]
     }
 
     local_secondary_index {

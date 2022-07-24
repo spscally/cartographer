@@ -18,23 +18,21 @@ DDB
         - get all
         - get all for category
         - get all for category by date
+        - get all for date range
     - schema:
         pk = "reflection"
-        sk = category
+        sk = category_date
         date (local secondary index)
         title
         subtitle
         body
-
-- all columns:
-    pk S
-    sk S
-    ddc S
-    date S
-    title S
-    author S
-    subtitle S
-    body S
+- reflection categories:
+    - access patterns:
+        - get all
+    - schema:
+        pk = "category"
+        sk = "reflection"
+        categories SS
 
 API
 
@@ -48,3 +46,4 @@ API
     - params:
         from_date
         to_date
+- /category/reflection
