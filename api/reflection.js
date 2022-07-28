@@ -9,9 +9,6 @@ export const getReflectionsByDate = async (category, fromDate, toDate) => {
   if (!toDate) toDate = "9999-12-31T23:59:99";
   const params = {
     KeyConditionExpression: "pk = :pk AND sk BETWEEN :sk_start AND :sk_end",
-    ExpressionAttributeNames: {
-      "#date": "date",
-    },
     ExpressionAttributeValues: {
       ":pk": { S: "reflection" },
       ":sk_start": { S: `${category}_${fromDate}` },

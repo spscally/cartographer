@@ -8,7 +8,7 @@ const SideNav = ({ navLabels, clickFunctions }) => {
           key={label}
           className="sidenav-link"
           href={`#${label.toLowerCase()}`}
-          onClick={() => clickFunctions[index]}
+          onClick={clickFunctions[index]}
         >
           {label}
         </a>

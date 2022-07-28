@@ -1,34 +1,44 @@
 import React from "react";
 import axios from "axios";
-import SideNav from "./SideNav";
 
-const Books = ({ api }) => {
+const Reflections = ({ api }) => {
+  const [category, setCategory] = React.useState(null);
   const [categories, setCategories] = React.useState([]);
   const [reflections, setReflections] = React.useState([]);
 
-  const fetchCategories = async () => {
-    const result = await axios(`${api}/category/reflection`);
-    console.log(result);
-    setCategories(result.data);
-  };
+  console.log("render reflections");
 
   React.useEffect(() => {
-    fetchCategories();
-  });
+    axios(`${api}/category/reflection`).then(
+      (res) => setCategories(res.data),
+      (error) => console.error(error)
+    );
+  }, [api]);
+
+  React.useEffect(() => {
+    if (!category) return;
+    axios(
+      `${api}/reflection/${category.toLowerCase()}?start_date=2022-01-01&end_date=2023-01-01`
+    ).then(
+      (res) => setReflections(res.data),
+      (error) => console.error(error)
+    );
+  }, [api, category]);
 
   return (
     <div className="page">
-      {/* TODO: not sure why this isn't displaying */}
-      <SideNav navLabels={categories} clickFunctions={[undefined, undefined]} />
+      REFLECTIONS
+      {categories.map((category, index) => (
+        <button onClick={() => setCategory(category)}>{category}</button>
+      ))}
+      <hr />
       <ul>
-        {categories.map((category, index) => (
-          <li key="index">{category}</li>
+        {reflections.map((reflection, index) => (
+          <ul key="index">{reflection.title}</ul>
         ))}
       </ul>
     </div>
   );
-
-  // TODO: I think I'll need an endpoint for getting all categories
 };
 
-export default Books;
+export default Reflections;

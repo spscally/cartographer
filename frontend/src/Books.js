@@ -5,6 +5,7 @@ const Books = ({ api }) => {
 
   return (
     <div className="page">
+      BOOKS
       <ul>
         {books.map((book) => (
           <li key={book.sk}>

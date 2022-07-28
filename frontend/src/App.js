@@ -12,20 +12,12 @@ function App() {
   const [page, setPage] = React.useState("books");
 
   function onBooksClick() {
+    console.log("clicked");
     setPage("books");
   }
 
   function onReflectionsClick() {
     setPage("reflections");
-  }
-
-  function showPage() {
-    switch (page) {
-      case "books":
-        return <Books api={API} />;
-      default:
-        return <Reflections api={API} />;
-    }
   }
 
   return (
@@ -34,7 +26,7 @@ function App() {
         navLabels={["Books", "Reflections"]}
         clickFunctions={[onBooksClick, onReflectionsClick]}
       />
-      {showPage()}
+      {page === "books" ? <Books api={API} /> : <Reflections api={API} />}
     </>
   );
 }
