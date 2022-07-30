@@ -1,3 +1,22 @@
+.cartographerButton {
+  margin: 10px;
+  padding: 5px;
+}
+
+.cartographerButton-selected {
+  color: blue;
+  background-color: steelblue;
+  color: snow;
+}
+
+.simple-input {
+  padding-bottom: 10px;
+}
+
+.simple-input-field {
+  width: 100%
+}
+
 .sidenav {
   height: 100%;
   width: 10%;

@@ -6,8 +6,6 @@ import SideNav from "./SideNav.js";
 
 import React from "react";
 
-const API = "http://localhost:5000";
-
 function App() {
   const [page, setPage] = React.useState("books");
 
@@ -26,7 +24,7 @@ function App() {
         navLabels={["Books", "Reflections"]}
         clickFunctions={[onBooksClick, onReflectionsClick]}
       />
-      {page === "books" ? <Books api={API} /> : <Reflections api={API} />}
+      {page === "books" ? <Books /> : <Reflections />}
     </>
   );
 }
