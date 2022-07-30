@@ -95,6 +95,7 @@ const ViewReflections = () => {
         {categories.map((c, index) => (
           <button
             key={index}
+            type="button"
             className={
               c === category
                 ? "cartographerButton cartographerButton-selected"
@@ -119,14 +120,27 @@ const ViewReflections = () => {
         <input type="submit" value="Search" disabled={!category} />
       </form>
       <hr />
-      <ul>
-        {reflections.map((reflection, index) => (
-          <ul key={index}>
-            {reflection.date.substring(0, 10)}: {reflection.title}
-          </ul>
-        ))}
-      </ul>
+      {reflections.map((reflection, index) => (
+        <Reflection reflection={reflection} />
+      ))}
     </>
+  );
+};
+
+const Reflection = ({ reflection }) => {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <div onClick={() => setOpen(!open)} className="reflectionRow">
+      <div className="reflectionRow-closedText">
+        {reflection.date.substring(0, 10)}: {reflection.title} -{" "}
+        {reflection.subtitle}
+      </div>
+      <div className="reflectionRow-dropdownButton">{open ? "-" : "+"}</div>
+      {open ? (
+        <div className="reflectionRow-expanded">{reflection.body}</div>
+      ) : null}
+    </div>
   );
 };
 
