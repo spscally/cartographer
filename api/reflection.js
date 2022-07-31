@@ -45,6 +45,23 @@ export const putReflection = async (reflection) => {
     TableName: TABLE_NAME,
     Item: reflection,
   };
+  await putReflectionCategory(reflection.category);
+  await client.send(new PutCommand(params));
+};
+
+const putReflectionCategory = async (category) => {
+  const categories = await getReflectionCategories();
+  if (categories.indexOf(category) !== -1) return;
+  const newCategories = [...categories, category];
+  newCategories.sort();
+  const params = {
+    TableName: TABLE_NAME,
+    Item: {
+      pk: "category",
+      sk: "reflection",
+      categories: newCategories,
+    },
+  };
   await client.send(new PutCommand(params));
 };
 

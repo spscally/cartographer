@@ -88,6 +88,7 @@ function putReflection(req, res, next) {
   const reflection = {
     pk: "reflection",
     sk: `${req.params.category.toString()}_${date}`,
+    category: req.params.category,
     date: date,
     title: req.body.title.toString(),
     subtitle: req.body.subtitle.toString(),
