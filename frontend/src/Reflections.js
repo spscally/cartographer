@@ -120,8 +120,14 @@ const ViewReflections = () => {
         <input type="submit" value="Search" disabled={!category} />
       </form>
       <hr />
+      {reflections.length > 0 ? (
+        <>
+          Results: {reflections.length}
+          <hr />
+        </>
+      ) : null}
       {reflections.map((reflection, index) => (
-        <Reflection reflection={reflection} />
+        <Reflection key={index} reflection={reflection} />
       ))}
     </>
   );
@@ -138,14 +144,18 @@ const Reflection = ({ reflection }) => {
       </div>
       <div className="reflectionRow-dropdownButton">{open ? "-" : "+"}</div>
       {open ? (
-        <div className="reflectionRow-expanded">{reflection.body}</div>
+        <div className="reflectionRow-expanded">
+          {reflection.body.split("\n").map((paragraph, index) => (
+            <p key={index}>{paragraph}</p>
+          ))}
+        </div>
       ) : null}
     </div>
   );
 };
 
 const Reflections = () => {
-  const [mode, setMode] = React.useState("add");
+  const [mode, setMode] = React.useState(modes[0]);
 
   function renderReflectionModePage() {
     if (mode === "add") return <AddReflection />;
