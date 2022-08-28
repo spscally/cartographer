@@ -56,12 +56,14 @@ function getBooks(req, res, next) {
 // TODO: jsonschema
 function putBook(req, res, next) {
   const date = req.body.date ?? new Date().toISOString();
+  const author = req.body.author.toString();
+  const title = req.body.title.toString();
   const book = {
     pk: "book",
-    sk: req.body.ddc.toString(),
+    sk: `${req.body.ddc.toString()}_${author}_${title}`,
     date: date,
-    title: req.body.title.toString(),
-    author: req.body.author.toString(),
+    title: title,
+    author: author,
   };
   return Promise.resolve(_putBook(book))
     .then((result) => res.send(result))
