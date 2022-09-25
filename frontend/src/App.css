@@ -9,24 +9,24 @@
   color: snow;
 }
 
-.reflectionRow {
+.dataRow {
   padding: 5px;
   margin: 15px 5px 15px 5px;
 }
 
-.reflectionRow-closedText {
+.dataRow-closedText {
   float: left;
   width: 80%;
 }
 
-.reflectionRow-dropdownButton {
+.dataRow-dropdownButton {
   float: right;
   width: 20%;
   text-align: right;
 }
 
-.reflectionRow-expanded {
-  padding: 30px
+.dataRow-expanded {
+  padding: 30px 30px 0 30px
 }
 
 .simple-input {

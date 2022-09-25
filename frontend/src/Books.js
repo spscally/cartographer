@@ -3,6 +3,7 @@ import React from "react";
 import { API } from "./api";
 import axios from "axios";
 import { SimpleInput } from "./input";
+import { dateSort, ddcSort } from "./sort";
 
 const modes = ["add", "view"];
 
@@ -56,7 +57,7 @@ const AddBook = () => {
         <input type="submit" value="Get DDC" disabled={!isbn} />
       </form>
       <hr />
-      {ddc ? (
+      {ddc ?? (
         <form onSubmit={handleSubmitBook}>
           <SimpleInput
             name="Title"
@@ -79,13 +80,163 @@ const AddBook = () => {
             disabled={!title || !author || !ddc}
           />
         </form>
-      ) : null}
+      )}
     </>
   );
 };
 
 const ViewBooks = () => {
-  return <div> view books</div>;
+  const [mode, setMode] = React.useState();
+
+  return (
+    <>
+      <button
+        type="button"
+        className={
+          mode === "by_date"
+            ? "cartographerButton cartographerButton-selected"
+            : "cartographerButton"
+        }
+        onClick={() => setMode("by_date")}
+      >
+        By Date
+      </button>
+      <button
+        type="button"
+        className={
+          mode === "by_ddc"
+            ? "cartographerButton cartographerButton-selected"
+            : "cartographerButton"
+        }
+        onClick={() => setMode("by_ddc")}
+      >
+        By DDC
+      </button>
+      <hr />
+      {mode === "by_date" ? <ViewBooksByDate /> : null}
+      {mode === "by_ddc" ? <ViewBooksByDDC /> : null}
+    </>
+  );
+};
+
+const ViewBooksByDate = () => {
+  const [fromDate, setFromDate] = React.useState("");
+  const [toDate, setToDate] = React.useState("");
+  const [books, setBooks] = React.useState([]);
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    axios(`${API}/book?from_date=${fromDate}&to_date=${toDate}`).then(
+      (res) => {
+        dateSort(res.data);
+        setBooks(res.data);
+      },
+      (error) => console.error(error)
+    );
+  }
+
+  return (
+    <>
+      {" "}
+      <form onSubmit={handleSubmit}>
+        <SimpleInput
+          name="From Date"
+          value={fromDate}
+          onChange={(event) => setFromDate(event.target.value)}
+        />
+        <SimpleInput
+          name="To Date"
+          value={toDate}
+          onChange={(event) => setToDate(event.target.value)}
+        />
+        <input type="submit" value="Search" />
+      </form>
+      <hr />
+      {books.length > 0 ? (
+        <>
+          Results: {books.length}
+          <hr />
+        </>
+      ) : null}
+      {books.map((book, index) => (
+        <Book key={index} book={book} mode="by_date" />
+      ))}
+    </>
+  );
+};
+
+const ViewBooksByDDC = () => {
+  const [fromDDC, setFromDDC] = React.useState("");
+  const [toDDC, setToDDC] = React.useState("");
+  const [books, setBooks] = React.useState([]);
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    axios(`${API}/book?from_ddc=${fromDDC}&to_ddc=${toDDC}`).then(
+      (res) => {
+        ddcSort(res.data);
+        setBooks(res.data);
+      },
+      (error) => console.error(error)
+    );
+  }
+
+  return (
+    <>
+      {" "}
+      <form onSubmit={handleSubmit}>
+        <SimpleInput
+          name="From DDC"
+          value={fromDDC}
+          onChange={(event) => setFromDDC(event.target.value)}
+        />
+        <SimpleInput
+          name="To DDC"
+          value={toDDC}
+          onChange={(event) => setToDDC(event.target.value)}
+        />
+        <input type="submit" value="Search" />
+      </form>
+      <hr />
+      {books.length > 0 ? (
+        <>
+          Results: {books.length}
+          <hr />
+        </>
+      ) : null}
+      {books.map((book, index) => (
+        <Book key={index} book={book} mode="by_ddc" />
+      ))}
+    </>
+  );
+};
+
+const Book = ({ book, mode }) => {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <div onClick={() => setOpen(!open)} className="dataRow">
+      <div className="dataRow-closedText">
+        {mode === "by_date"
+          ? `${book.date.substring(0, 10)}: ${book.title}`
+          : null}
+        {mode === "by_ddc" ? `${book.sk.split("_")[0]}: ${book.title}` : null}
+      </div>
+      <div className="dataRow-dropdownButton">{open ? "-" : "+"}</div>
+      {open ? (
+        <div className="dataRow-expanded">
+          <ul>
+            <li>Title: {book.title}</li>
+            <li>Author: {book.author}</li>
+            {!book.date.startsWith("0001-01-01") ? (
+              <li>Date: {book.date.substring(0, 10)}</li>
+            ) : null}
+            <li>DDC: {book.sk.split("_")[0]}</li>
+          </ul>
+        </div>
+      ) : null}
+    </div>
+  );
 };
 
 const Books = () => {

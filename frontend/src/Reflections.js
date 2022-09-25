@@ -137,14 +137,14 @@ const Reflection = ({ reflection }) => {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <div onClick={() => setOpen(!open)} className="reflectionRow">
-      <div className="reflectionRow-closedText">
+    <div onClick={() => setOpen(!open)} className="dataRow">
+      <div className="dataRow-closedText">
         {reflection.date.substring(0, 10)}: {reflection.title} -{" "}
         {reflection.subtitle}
       </div>
-      <div className="reflectionRow-dropdownButton">{open ? "-" : "+"}</div>
+      <div className="dataRow-dropdownButton">{open ? "-" : "+"}</div>
       {open ? (
-        <div className="reflectionRow-expanded">
+        <div className="dataRow-expanded">
           {reflection.body.split("\n").map((paragraph, index) => (
             <p key={index}>{paragraph}</p>
           ))}
