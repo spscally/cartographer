@@ -57,7 +57,7 @@ const AddBook = () => {
         <input type="submit" value="Get DDC" disabled={!isbn} />
       </form>
       <hr />
-      {ddc ?? (
+      {ddc != null ? (
         <form onSubmit={handleSubmitBook}>
           <SimpleInput
             name="Title"
@@ -80,7 +80,7 @@ const AddBook = () => {
             disabled={!title || !author || !ddc}
           />
         </form>
-      )}
+      ) : null}
     </>
   );
 };

@@ -10,7 +10,6 @@ function App() {
   const [page, setPage] = React.useState("books");
 
   function onBooksClick() {
-    console.log("clicked");
     setPage("books");
   }
 
