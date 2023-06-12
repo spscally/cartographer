@@ -51,27 +51,3 @@ export const putBook = async (book) => {
   };
   await client.send(new PutCommand(params));
 };
-
-export const getBookFromIsbn = async (isbn) => {
-  const res = await axios(
-    `http://classify.oclc.org/classify2/Classify?isbn=${isbn}&summary=true&maxRecs=1`
-  );
-
-  let resJson = parser.parse(res.data);
-  if (resJson.classify.workCount !== undefined) {
-    const owi = resJson.classify.works.work["@_owi"];
-    const owiRes = await axios(
-      `http://classify.oclc.org/classify2/Classify?owi=${owi}&summary=true&maxRecs=1`
-    );
-    resJson = parser.parse(owiRes.data);
-  }
-
-  if (resJson.classify.work === undefined) return {};
-
-  const book = {
-    title: resJson.classify.work["@_title"],
-    author: resJson.classify.work["@_author"],
-    ddc: resJson.classify.recommendations.ddc.mostPopular["@_sfa"],
-  };
-  return book;
-};

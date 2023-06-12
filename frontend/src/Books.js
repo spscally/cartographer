@@ -8,7 +8,6 @@ import { dateSort, ddcSort } from "./sort";
 const modes = ["add", "view"];
 
 const AddBook = () => {
-  const [isbn, setIsbn] = React.useState("");
   const [title, setTitle] = React.useState("");
   const [author, setAuthor] = React.useState("");
   const [ddc, setDdc] = React.useState("");
@@ -27,61 +26,30 @@ const AddBook = () => {
           setTitle("");
           setAuthor("");
           setDdc("");
-          setIsbn("");
         },
         (error) => alert(error)
       );
   }
 
-  function handleSubmitIsbn(event) {
-    event.preventDefault();
-    axios(`${API}/ddc?isbn=${isbn}`).then(
-      (res) => {
-        if (!res.data.ddc) alert("Book not found!");
-        setTitle(res.data.title ?? "");
-        setAuthor(res.data.author ?? "");
-        setDdc(res.data.ddc ?? "");
-      },
-      (error) => alert(error)
-    );
-  }
-
   return (
-    <>
-      <form onSubmit={handleSubmitIsbn}>
-        <SimpleInput
-          name="ISBN"
-          value={isbn}
-          onChange={(event) => setIsbn(event.target.value)}
-        />
-        <input type="submit" value="Get DDC" disabled={!isbn} />
-      </form>
-      <hr />
-      {ddc != null ? (
-        <form onSubmit={handleSubmitBook}>
-          <SimpleInput
-            name="Title"
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
-          />
-          <SimpleInput
-            name="Author"
-            value={author}
-            onChange={(event) => setAuthor(event.target.value)}
-          />
-          <SimpleInput
-            name="DDC"
-            value={ddc}
-            onChange={(event) => setDdc(event.target.value)}
-          />
-          <input
-            type="submit"
-            value="Add"
-            disabled={!title || !author || !ddc}
-          />
-        </form>
-      ) : null}
-    </>
+    <form onSubmit={handleSubmitBook}>
+      <SimpleInput
+        name="Title"
+        value={title}
+        onChange={(event) => setTitle(event.target.value)}
+      />
+      <SimpleInput
+        name="Author"
+        value={author}
+        onChange={(event) => setAuthor(event.target.value)}
+      />
+      <SimpleInput
+        name="DDC"
+        value={ddc}
+        onChange={(event) => setDdc(event.target.value)}
+      />
+      <input type="submit" value="Add" disabled={!title || !author || !ddc} />
+    </form>
   );
 };
 

@@ -4,12 +4,7 @@ import cors from "cors";
 const app = express();
 const port = 5000;
 
-import {
-  getBooksByDDC,
-  getBooksByDate,
-  putBook as _putBook,
-  getBookFromIsbn as _getBookFromIsbn,
-} from "./book.js";
+import { getBooksByDDC, getBooksByDate, putBook as _putBook } from "./book.js";
 
 import {
   getReflectionsByDate,
@@ -70,15 +65,7 @@ function putBook(req, res, next) {
     .catch((err) => next(err));
 }
 
-function getBookFromIsbn(req, res, next) {
-  const isbn = req.query.isbn;
-  return Promise.resolve(_getBookFromIsbn(isbn))
-    .then((result) => res.send(result))
-    .catch((err) => next(err));
-}
-
 app.route("/book").get(getBooks).put(putBook);
-app.route("/ddc").get(getBookFromIsbn);
 
 // =================
 // == REFLECTIONS ==
