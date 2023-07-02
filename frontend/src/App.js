@@ -1,7 +1,6 @@
 import "./App.css";
 
 import Books from "./Books.js";
-import Reflections from "./Reflections.js";
 import SideNav from "./SideNav.js";
 
 import React from "react";
@@ -13,17 +12,10 @@ function App() {
     setPage("books");
   }
 
-  function onReflectionsClick() {
-    setPage("reflections");
-  }
-
   return (
     <>
-      <SideNav
-        navLabels={["Books", "Reflections"]}
-        clickFunctions={[onBooksClick, onReflectionsClick]}
-      />
-      {page === "books" ? <Books /> : <Reflections />}
+      <SideNav navLabels={["Books"]} clickFunctions={[onBooksClick]} />
+      {page === "books" ? <Books /> : undefined}
     </>
   );
 }
